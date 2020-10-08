@@ -1,0 +1,28 @@
+{
+  "General": {
+    "Protocol": "https",
+    "Domain": "api.dev.financelime.com"
+  },
+  "Client": {
+    "IdleConnTimeoutMs": 30000,
+    "TimeoutMs": 10000
+  },
+  "Instance": {
+    "InitializationOnStartupEnabled": true,
+    "UnitSystemD": "financelime-rest-api.service"
+  },
+  "SSH": {
+    "Port": 0,
+    "UserName": ""
+  },
+  "IMAP": {
+    "Host": "",
+    "Port": 993,
+    "Users": {
+      "Username": [],
+      "Password": []
+    }
+  },
+  "InviteCode": "",
+  "CurrentRemoteAddress": ""
+}
