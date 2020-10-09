@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	c "github.com/dmalix/financelime-rest-api-test/cmd/config"
-	i "github.com/dmalix/financelime-rest-api-test/cmd/init"
-	g "github.com/dmalix/financelime-rest-api-test/cmd/pgraphics"
-	"github.com/dmalix/financelime-rest-api-test/cmd/tests/account"
-	"github.com/dmalix/financelime-rest-api-test/cmd/tests/service"
-	u "github.com/dmalix/financelime-rest-api-test/cmd/utils"
+	c "github.com/dmalix/financelime-rest-api-tests/cmd/config"
+	i "github.com/dmalix/financelime-rest-api-tests/cmd/init"
+	g "github.com/dmalix/financelime-rest-api-tests/cmd/pgraphics"
+	"github.com/dmalix/financelime-rest-api-tests/cmd/tests/account"
+	"github.com/dmalix/financelime-rest-api-tests/cmd/tests/service"
+	u "github.com/dmalix/financelime-rest-api-tests/cmd/utils"
 	"os/exec"
 	"strconv"
 )
@@ -102,7 +102,7 @@ func confirmRun(env *c.Env) error {
 	}
 	u.Colorize(u.ColorYellow, "\r"+string(out), true)
 
-	fmt.Printf("Are you sure you want to run the REST-API test for the %s domain?", env.Config.General.Domain)
+	fmt.Printf("Are you sure you want to run the REST-API tests for the %s domain?", env.Config.General.Domain)
 	if !u.Confirmation() {
 		u.Colorize(u.ColorRed, "Start aborted", true)
 		return err

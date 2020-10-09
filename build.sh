@@ -13,4 +13,4 @@ set -e
 export GOFLAGS="-mod=vendor"
 go build \
   -ldflags="-s -w -X 'main.version=${VERSION}' -X 'main.commit=${COMMIT}' -X 'main.buildTime=${BUILD_TIME}' -X 'main.compiler=${COMPILER}'" \
-  -o bin/financelime-rest-api-test cmd/main.go
+  -o bin/financelime-rest-api-tests cmd/main.go

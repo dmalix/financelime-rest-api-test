@@ -3,9 +3,9 @@ package service
 import (
 	"errors"
 	"fmt"
-	c "github.com/dmalix/financelime-rest-api-test/cmd/config"
-	g "github.com/dmalix/financelime-rest-api-test/cmd/pgraphics"
-	u "github.com/dmalix/financelime-rest-api-test/cmd/utils"
+	c "github.com/dmalix/financelime-rest-api-tests/cmd/config"
+	g "github.com/dmalix/financelime-rest-api-tests/cmd/pgraphics"
+	u "github.com/dmalix/financelime-rest-api-tests/cmd/utils"
 	"strconv"
 )
 

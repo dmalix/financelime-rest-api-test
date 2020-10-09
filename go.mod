@@ -1,4 +1,4 @@
-module github.com/dmalix/financelime-rest-api-test
+module github.com/dmalix/financelime-rest-api-tests
 
 go 1.15
 

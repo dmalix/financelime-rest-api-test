@@ -3,8 +3,8 @@ package service
 import (
 	"errors"
 	"fmt"
-	c "github.com/dmalix/financelime-rest-api-test/cmd/config"
-	u "github.com/dmalix/financelime-rest-api-test/cmd/utils"
+	c "github.com/dmalix/financelime-rest-api-tests/cmd/config"
+	u "github.com/dmalix/financelime-rest-api-tests/cmd/utils"
 	"net/http"
 	"strconv"
 )
