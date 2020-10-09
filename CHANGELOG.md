@@ -1,3 +1,6 @@
+## v1.0.0
+- [x] Small improvements in tests
+
 ## v0.1.1
 - [x] Small improvements in tests
 

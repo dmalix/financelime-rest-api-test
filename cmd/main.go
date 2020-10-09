@@ -78,7 +78,9 @@ func main() {
 	}
 	numberTestsTotal = numberTestsTotal + numberTests
 
-	u.Colorize(u.ColorGreen, g.Line, true)
+	fmt.Println(g.SpaceI)
+	fmt.Print(g.Point0)
+
 	u.Colorize(u.ColorGreen, fmt.Sprintf("All tests passed successfully(%s)", strconv.Itoa(numberTestsTotal)), true)
 	u.Colorize(u.ColorBlue, g.Line, true)
 }
