@@ -5,7 +5,7 @@
   },
   "Client": {
     "IdleConnTimeoutMs": 30000,
-    "TimeoutMs": 10000
+    "TimeoutMs": 30000
   },
   "Instance": {
     "InitializationOnStartupEnabled": true,

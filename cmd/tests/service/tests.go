@@ -31,7 +31,7 @@ func RunTests(env *c.Env) (int, error) {
 	indentBeforeStatus = "\t\t\t"
 	numberTests = 0
 
-	fmt.Print(g.ItemII)
+	fmt.Print(g.ItemIL)
 	fmt.Print(testName, indentBeforeStatus)
 
 	testID = "#PV6ClE5y"
@@ -50,36 +50,6 @@ func RunTests(env *c.Env) (int, error) {
 	numberTests++
 	if err = getCurrentVersion_200(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)
-	numberTestsTotal = numberTestsTotal + numberTests
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	testName = "Get the current state of the REST-API service"
-	indentBeforeStatus = "\t\t\t\t"
-	numberTests = 0
-
-	fmt.Print(g.ItemIL)
-	fmt.Print(testName, indentBeforeStatus)
-
-	testID = "#O1qf4Uac"
-	numberTests++
-	if err = getCurrentState_400_NoHeaderRequestID(env); err != nil {
-		return 0, errors.New(fmt.Sprintf("%s [%s]", errorMessage, err))
-	}
-
-	testID = "#Yr9WI6nW"
-	numberTests++
-	if err = getCurrentState_400_InvalidHeaderRequestID(env); err != nil {
-		return 0, errors.New(fmt.Sprintf("%s [%s]", errorMessage, err))
-	}
-
-	testID = "#Z2OlDEAc"
-	numberTests++
-	if err = getCurrentState_200(env); err != nil {
-		return 0, errors.New(fmt.Sprintf("%s [%s]", errorMessage, err))
 	}
 
 	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)

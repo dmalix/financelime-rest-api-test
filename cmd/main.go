@@ -5,7 +5,7 @@ import (
 	c "github.com/dmalix/financelime-rest-api-tests/cmd/config"
 	i "github.com/dmalix/financelime-rest-api-tests/cmd/init"
 	g "github.com/dmalix/financelime-rest-api-tests/cmd/pgraphics"
-	"github.com/dmalix/financelime-rest-api-tests/cmd/tests/account"
+	"github.com/dmalix/financelime-rest-api-tests/cmd/tests/authorization"
 	"github.com/dmalix/financelime-rest-api-tests/cmd/tests/service"
 	u "github.com/dmalix/financelime-rest-api-tests/cmd/utils"
 	"os/exec"
@@ -69,7 +69,7 @@ func main() {
 
 	fmt.Println(g.SpaceI)
 
-	if numberTests, err = account.RunTests(env); err != nil {
+	if numberTests, err = authorization.RunTests(env); err != nil {
 		u.Colorize(u.ColorRed, "Failed", true)
 		u.Colorize(u.ColorRed, g.Line, true)
 		u.Colorize(u.ColorRed, err.Error(), true)

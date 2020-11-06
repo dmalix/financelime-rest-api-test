@@ -1,4 +1,4 @@
-package account
+package authorization
 
 import (
 	"encoding/json"
@@ -12,11 +12,11 @@ import (
 	"time"
 )
 
-func createNewAccount_400_NoHeaderRequestID(env *c.Env) error {
+func createNewUser_400_NoHeaderRequestID(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 400
 	)
 
@@ -46,11 +46,11 @@ func createNewAccount_400_NoHeaderRequestID(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_400_NoHeaderContentType(env *c.Env) error {
+func createNewUser_400_NoHeaderContentType(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 400
 	)
 
@@ -80,11 +80,11 @@ func createNewAccount_400_NoHeaderContentType(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_400_InvalidLanguageDe(env *c.Env) error {
+func createNewUser_400_InvalidLanguageDe(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 400
 	)
 
@@ -115,11 +115,11 @@ func createNewAccount_400_InvalidLanguageDe(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_400_InvalidLanguage1234(env *c.Env) error {
+func createNewUser_400_InvalidLanguage1234(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 400
 	)
 
@@ -150,11 +150,11 @@ func createNewAccount_400_InvalidLanguage1234(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_400_InvalidLanguage(env *c.Env) error {
+func createNewUser_400_InvalidLanguage(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 400
 	)
 
@@ -185,11 +185,11 @@ func createNewAccount_400_InvalidLanguage(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_400_InvalidEmail(env *c.Env) error {
+func createNewUser_400_InvalidEmail(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 400
 	)
 
@@ -220,11 +220,11 @@ func createNewAccount_400_InvalidEmail(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_409_InvalidInviteCode(env *c.Env) error {
+func createNewUser_409_InvalidInviteCode(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 409
 	)
 
@@ -255,11 +255,11 @@ func createNewAccount_409_InvalidInviteCode(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_409_AccountAlreadyExist0(env *c.Env) error {
+func createNewUser_409_UserAlreadyExist0(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 409
 	)
 
@@ -290,11 +290,11 @@ func createNewAccount_409_AccountAlreadyExist0(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_202_Email1(env *c.Env) error {
+func createNewUser_202_Email1(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 202
 	)
 
@@ -330,11 +330,11 @@ func createNewAccount_202_Email1(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_409_AccountAlreadyExist1(env *c.Env) error {
+func createNewUser_409_UserAlreadyExist1(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 409
 	)
 
@@ -365,11 +365,11 @@ func createNewAccount_409_AccountAlreadyExist1(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_202_Email2(env *c.Env) error {
+func createNewUser_202_Email2(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 202
 	)
 
@@ -400,11 +400,11 @@ func createNewAccount_202_Email2(env *c.Env) error {
 	return nil
 }
 
-func createNewAccount_409_AccountAlreadyExist2(env *c.Env) error {
+func createNewUser_409_UserAlreadyExist2(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/signup"
+		endpoint           = "/authorization/signup"
 		statusCodeExpected = 409
 	)
 
@@ -637,7 +637,7 @@ func getPasswordFromEmail(env *c.Env) (string, error) {
 	}
 }
 
-func resetAccountPassword_400_NoHeaderContentType(env *c.Env) error {
+func resetUserPassword_400_NoHeaderContentType(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -669,7 +669,7 @@ func resetAccountPassword_400_NoHeaderContentType(env *c.Env) error {
 	return nil
 }
 
-func resetAccountPassword_400_NoHeaderRequestID(env *c.Env) error {
+func resetUserPassword_400_NoHeaderRequestID(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -701,7 +701,7 @@ func resetAccountPassword_400_NoHeaderRequestID(env *c.Env) error {
 	return nil
 }
 
-func resetAccountPassword_202(env *c.Env) error {
+func resetUserPassword_202(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
