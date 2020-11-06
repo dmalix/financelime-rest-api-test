@@ -1,5 +1,4 @@
 ## v1.0.1
-
 Changes:
 - [x] Small changes in tests: Create a new user. 
 
