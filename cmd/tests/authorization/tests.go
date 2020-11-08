@@ -28,13 +28,13 @@ func RunTests(env *c.Env) (int, error) {
 	const errorMessage = "Failed to complete the test %s [%s]"
 
 	fmt.Print(g.PointI0)
-	u.Colorize(u.ColorYellow, "Account tests group", true)
+	u.Colorize(u.ColorYellow, "Authorization tests group", true)
 	fmt.Println(g.SpaceII)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Create a new user"
-	indentBeforeStatus = "\t\t\t\t\t\t\t"
+	testName = "Sign Up"
+	indentBeforeStatus = "\t\t\t\t\t\t\t\t"
 	numberTests = 0
 
 	fmt.Print(g.ItemII)
@@ -123,8 +123,8 @@ func RunTests(env *c.Env) (int, error) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Confirm email (+30 sec of waiting)"
-	indentBeforeStatus = "\t\t\t\t\t"
+	testName = "Confirm user email (+30 sec of waiting)"
+	indentBeforeStatus = "\t\t\t\t"
 	numberTests = 0
 
 	fmt.Print(g.ItemII)

@@ -439,7 +439,7 @@ func confirmEmail_404_InvalidEndPoint123456789(env *c.Env) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/c/123456789"
+		endpoint           = "/acue/123456789"
 		statusCodeExpected = 404
 	)
 
@@ -467,23 +467,23 @@ func confirmEmail_200(env *c.Env) (string, error) {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/c/%s"
+		endpoint           = "/acue/%s"
 		statusCodeExpected = 200
 	)
 
 	var (
-		imap           u.IMAP
-		messageIdList  []string
-		messageID      string
-		err            error
-		statusCodeList []string
-		confirm        bool
-		statusCode     int
-		linkKeySource  string
-		linkKeyResult  string
-		domain         string
-		messageIDSplit []string
-		temp           []string
+		imap                  u.IMAP
+		messageIdList         []string
+		messageID             string
+		err                   error
+		statusCodeList        []string
+		confirm               bool
+		statusCode            int
+		confirmationKeySource string
+		confirmationKeyResult string
+		domain                string
+		messageIDSplit        []string
+		temp                  []string
 	)
 
 	time.Sleep(30 * time.Second)
@@ -495,7 +495,7 @@ func confirmEmail_200(env *c.Env) (string, error) {
 
 	messageIdList, err = imap.GetMailHeaders()
 	if err != nil {
-		return linkKeyResult, errors.New(fmt.Sprintf("Failed to get messageId list [%s]", err))
+		return confirmationKeyResult, errors.New(fmt.Sprintf("Failed to get messageId list [%s]", err))
 	}
 
 	for i := 0; i <= len(messageIdList)-1; i++ {
@@ -515,7 +515,7 @@ func confirmEmail_200(env *c.Env) (string, error) {
 		if len(temp) != 2 {
 			continue
 		}
-		linkKeySource = temp[1]
+		confirmationKeySource = temp[1]
 
 		// Get Domain
 		temp = strings.Split(messageIDSplit[1], ">")
@@ -523,26 +523,26 @@ func confirmEmail_200(env *c.Env) (string, error) {
 			continue
 		}
 		domain = temp[0]
-		if fmt.Sprintf("%s.%s", "create-new-account", env.Config.General.Domain) != domain {
+		if fmt.Sprintf("%s.%s", "sign-up", env.Config.General.Domain) != domain {
 			continue
 		}
 
 		statusCode, err =
-			u.HttpClient(env, method, fmt.Sprintf(endpoint, linkKeySource), nil, nil, nil)
+			u.HttpClient(env, method, fmt.Sprintf(endpoint, confirmationKeySource), nil, nil, nil)
 		if err != nil {
-			return linkKeyResult, errors.New(fmt.Sprintf("Failed to complete the request [%s]", err))
+			return confirmationKeyResult, errors.New(fmt.Sprintf("Failed to complete the request [%s]", err))
 		}
 		if statusCode == statusCodeExpected {
 			confirm = true
-			linkKeyResult = linkKeySource
+			confirmationKeyResult = confirmationKeySource
 		}
 		statusCodeList = append(statusCodeList, strconv.Itoa(statusCode))
 	}
 
 	if confirm {
-		return linkKeyResult, nil
+		return confirmationKeyResult, nil
 	} else {
-		return linkKeyResult,
+		return confirmationKeyResult,
 			errors.New(fmt.Sprintf("Failed to confirm email [%s]", strings.Join(statusCodeList, ",")))
 	}
 }
@@ -551,7 +551,7 @@ func confirmEmail_404(env *c.Env, pLinkKey string) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/c/%s"
+		endpoint           = "/acue/%s"
 		statusCodeExpected = 404
 	)
 
