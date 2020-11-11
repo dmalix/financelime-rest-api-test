@@ -175,7 +175,7 @@ func RunTests(env *c.Env) (int, error) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Get Access Token"
+	testName = "Request Access Token"
 	indentBeforeStatus = "\t\t\t\t\t\t\t"
 	numberTests = 0
 
@@ -184,7 +184,7 @@ func RunTests(env *c.Env) (int, error) {
 
 	testID = "#Kp0gJ1mm"
 	numberTests++
-	if accessToken, refreshToken, err = getAccessToken_200(env, newPassword); err != nil {
+	if accessToken, refreshToken, err = requestAccessToken_200(env, newPassword); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 

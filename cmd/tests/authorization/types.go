@@ -27,10 +27,8 @@ type device struct {
 }
 
 type jwt struct {
-	id              int64
-	PublicSessionID string `json:"id"`
-	AccessToken     string `json:"accessToken"`
-	RefreshToken    string `json:"refreshToken"`
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
 }
 
 type session struct {

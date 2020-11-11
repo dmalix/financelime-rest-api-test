@@ -439,7 +439,7 @@ func confirmEmail_404_InvalidEndPoint123456789(env *c.Env) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/acue/123456789"
+		endpoint           = "/u/123456789"
 		statusCodeExpected = 404
 	)
 
@@ -467,7 +467,7 @@ func confirmEmail_200(env *c.Env) (string, error) {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/acue/%s"
+		endpoint           = "/u/%s"
 		statusCodeExpected = 200
 	)
 
@@ -551,7 +551,7 @@ func confirmEmail_404(env *c.Env, pLinkKey string) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/acue/%s"
+		endpoint           = "/u/%s"
 		statusCodeExpected = 404
 	)
 
@@ -622,7 +622,7 @@ func getPasswordFromEmail(env *c.Env) (string, error) {
 			continue
 		}
 		domain = temp[0]
-		if fmt.Sprintf("%s.%s", "confirm-email", env.Config.General.Domain) != domain {
+		if fmt.Sprintf("%s.%s", "confirm-user-email", env.Config.General.Domain) != domain {
 			continue
 		}
 		confirm = true
@@ -738,7 +738,7 @@ func confirmPasswordReset_200(env *c.Env) (string, error) {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/rp/%s"
+		endpoint           = "/p/%s"
 		statusCodeExpected = 200
 	)
 
@@ -822,7 +822,7 @@ func confirmPasswordReset_404(env *c.Env, pLinkKey string) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/rp/%s"
+		endpoint           = "/p/%s"
 		statusCodeExpected = 404
 	)
 
@@ -845,11 +845,11 @@ func confirmPasswordReset_404(env *c.Env, pLinkKey string) error {
 //		accessToken string
 //		refreshToken string
 //		error
-func getAccessToken_200(env *c.Env, pPassword string) (string, string, error) {
+func requestAccessToken_200(env *c.Env, pPassword string) (string, string, error) {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/oauth/token"
+		endpoint           = "/authorization/oauth/token/request"
 		statusCodeExpected = 200
 	)
 
@@ -887,15 +887,14 @@ func getAccessToken_200(env *c.Env, pPassword string) (string, string, error) {
 				strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
 	}
 
-	if len(response.PublicSessionID) == 0 || len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
+	if len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
 		responseJson, err = json.Marshal(response)
 		if err != nil {
 			return accessToken, refreshToken,
 				errors.New("failed to convert response data to JSON-format")
 		}
 		return accessToken, refreshToken,
-			errors.New(fmt.Sprintf("REST-API service returned empty value: [%s, %s, %s] %s",
-				strconv.Itoa(len(response.PublicSessionID)),
+			errors.New(fmt.Sprintf("REST-API service returned empty value: [%s, %s] %s",
 				strconv.Itoa(len(response.AccessToken)),
 				strconv.Itoa(len(response.RefreshToken)),
 				string(responseJson)))
@@ -921,7 +920,7 @@ func getEmailAboutLoginAction(env *c.Env) error {
 		domain                  string
 		messageIDSplit          []string
 		temp                    []string
-		domainExpected          = fmt.Sprintf("%s.%s", "get-access-token", env.Config.General.Domain)
+		domainExpected          = fmt.Sprintf("%s.%s", "request-access-token", env.Config.General.Domain)
 	)
 
 	time.Sleep(30 * time.Second)
@@ -1388,21 +1387,19 @@ func refreshAccessToken_200(env *c.Env, pRefreshToken string) (string, string, s
 				strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
 	}
 
-	if len(response.PublicSessionID) == 0 || len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
+	if len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
 		responseJson, err = json.Marshal(response)
 		if err != nil {
 			return publicSessionID, accessToken, refreshToken,
 				errors.New("failed to convert response data to JSON-format")
 		}
 		return publicSessionID, accessToken, refreshToken,
-			errors.New(fmt.Sprintf("REST-API service returned empty value [%v, %v, %v]: %s",
-				strconv.Itoa(len(response.PublicSessionID)),
+			errors.New(fmt.Sprintf("REST-API service returned empty value [%v, %v]: %s",
 				strconv.Itoa(len(response.AccessToken)),
 				strconv.Itoa(len(response.RefreshToken)),
 				string(responseJson)))
 	}
 
-	publicSessionID = response.PublicSessionID
 	accessToken = response.AccessToken
 	refreshToken = response.RefreshToken
 

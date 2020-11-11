@@ -14,7 +14,7 @@ Changes:
 - [x] Create the test: Get a password from the email
 - [x] Create the test: Get Access Token
 - [x] Create the test: Get a list of active sessions
-- [x] Create the test: Refresh Access Token
+- [x] Create the test: Refresh Access token
 - [x] Create the test: Revoke Access Token
 - [x] Create the test: Create a password reset request
 - [x] Create the test: Confirm password reset
