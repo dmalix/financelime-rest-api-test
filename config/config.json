@@ -1,7 +1,7 @@
 {
   "General": {
     "Protocol": "https",
-    "Domain": "api.dev.financelime.com"
+    "Domain": "api.auth.dev.financelime.com"
   },
   "Client": {
     "IdleConnTimeoutMs": 30000,
@@ -9,7 +9,7 @@
   },
   "Instance": {
     "InitializationOnStartupEnabled": true,
-    "UnitSystemD": "financelime-rest-api.service"
+    "UnitSystemD": "financelime-auth.service"
   },
   "SSH": {
     "Port": 0,

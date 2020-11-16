@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	c "github.com/dmalix/financelime-rest-api-tests/cmd/config"
-	u "github.com/dmalix/financelime-rest-api-tests/cmd/utils"
+	c "github.com/dmalix/financelime-functional-tests/cmd/config"
+	u "github.com/dmalix/financelime-functional-tests/cmd/utils"
 	"net/http"
 	"strconv"
 	"strings"
@@ -16,7 +16,7 @@ func createNewUser_400_NoHeaderRequestID(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 400
 	)
 
@@ -50,7 +50,7 @@ func createNewUser_400_NoHeaderContentType(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 400
 	)
 
@@ -84,7 +84,7 @@ func createNewUser_400_InvalidLanguageDe(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 400
 	)
 
@@ -119,7 +119,7 @@ func createNewUser_400_InvalidLanguage1234(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 400
 	)
 
@@ -154,7 +154,7 @@ func createNewUser_400_InvalidLanguage(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 400
 	)
 
@@ -189,7 +189,7 @@ func createNewUser_400_InvalidEmail(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 400
 	)
 
@@ -224,7 +224,7 @@ func createNewUser_409_InvalidInviteCode(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 409
 	)
 
@@ -259,7 +259,7 @@ func createNewUser_409_UserAlreadyExist0(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 409
 	)
 
@@ -294,7 +294,7 @@ func createNewUser_202_Email1(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 202
 	)
 
@@ -334,7 +334,7 @@ func createNewUser_409_UserAlreadyExist1(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 409
 	)
 
@@ -369,7 +369,7 @@ func createNewUser_202_Email2(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 202
 	)
 
@@ -404,7 +404,7 @@ func createNewUser_409_UserAlreadyExist2(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/signup"
+		endpoint           = "/v1/signup"
 		statusCodeExpected = 409
 	)
 
@@ -849,7 +849,7 @@ func requestAccessToken_200(env *c.Env, pPassword string) (string, string, error
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/authorization/oauth/token/request"
+		endpoint           = "/v1/oauth/token/request"
 		statusCodeExpected = 200
 	)
 

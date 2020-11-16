@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	c "github.com/dmalix/financelime-rest-api-tests/cmd/config"
+	c "github.com/dmalix/financelime-functional-tests/cmd/config"
 	"io/ioutil"
 	"net/http"
 	"time"

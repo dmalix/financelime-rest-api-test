@@ -3,7 +3,7 @@ package init
 import (
 	"errors"
 	"fmt"
-	c "github.com/dmalix/financelime-rest-api-tests/cmd/config"
+	c "github.com/dmalix/financelime-functional-tests/cmd/config"
 	"os/exec"
 	"strconv"
 	"time"

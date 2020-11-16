@@ -1,4 +1,4 @@
-# github.com/emersion/go-imap v1.0.5
+# github.com/emersion/go-imap v1.0.6
 ## explicit
 github.com/emersion/go-imap
 github.com/emersion/go-imap/client

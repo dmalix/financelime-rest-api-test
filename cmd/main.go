@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	c "github.com/dmalix/financelime-rest-api-tests/cmd/config"
-	i "github.com/dmalix/financelime-rest-api-tests/cmd/init"
-	g "github.com/dmalix/financelime-rest-api-tests/cmd/pgraphics"
-	"github.com/dmalix/financelime-rest-api-tests/cmd/tests/authorization"
-	"github.com/dmalix/financelime-rest-api-tests/cmd/tests/service"
-	u "github.com/dmalix/financelime-rest-api-tests/cmd/utils"
+	c "github.com/dmalix/financelime-functional-tests/cmd/config"
+	i "github.com/dmalix/financelime-functional-tests/cmd/init"
+	g "github.com/dmalix/financelime-functional-tests/cmd/pgraphics"
+	"github.com/dmalix/financelime-functional-tests/cmd/tests/authorization"
+	"github.com/dmalix/financelime-functional-tests/cmd/tests/service"
+	u "github.com/dmalix/financelime-functional-tests/cmd/utils"
 	"os/exec"
 	"strconv"
 )

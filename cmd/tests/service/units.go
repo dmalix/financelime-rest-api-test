@@ -3,8 +3,8 @@ package service
 import (
 	"errors"
 	"fmt"
-	c "github.com/dmalix/financelime-rest-api-tests/cmd/config"
-	u "github.com/dmalix/financelime-rest-api-tests/cmd/utils"
+	c "github.com/dmalix/financelime-functional-tests/cmd/config"
+	u "github.com/dmalix/financelime-functional-tests/cmd/utils"
 	"net/http"
 	"strconv"
 )
@@ -13,7 +13,7 @@ func getCurrentVersion_400_NoHeaderRequestID(env *c.Env) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/system/dist"
+		endpoint           = "/v1/dist"
 		statusCodeExpected = 400
 	)
 
@@ -42,7 +42,7 @@ func getCurrentVersion_400_InvalidRequestID(env *c.Env) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/system/dist"
+		endpoint           = "/v1/dist"
 		statusCodeExpected = 400
 	)
 
@@ -73,7 +73,7 @@ func getCurrentVersion_200(env *c.Env) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/system/dist"
+		endpoint           = "/v1/dist"
 		statusCodeExpected = 200
 	)
 
