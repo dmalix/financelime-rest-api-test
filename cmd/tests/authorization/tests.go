@@ -42,79 +42,79 @@ func RunTests(env *c.Env) (int, error) {
 
 	testID = "#hdpFBOG7"
 	numberTests++
-	if err = createNewUser_400_NoHeaderRequestID(env); err != nil {
+	if err = signUp_400_NoHeaderRequestID(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#VuLq72Fi"
 	numberTests++
-	if err = createNewUser_400_NoHeaderContentType(env); err != nil {
+	if err = signUp_400_NoHeaderContentType(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#T6PwbuNa"
 	numberTests++
-	if err = createNewUser_400_InvalidLanguageDe(env); err != nil {
+	if err = signUp_400_InvalidLanguageDe(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#02GXjc2C"
 	numberTests++
-	if err = createNewUser_400_InvalidLanguage1234(env); err != nil {
+	if err = signUp_400_InvalidLanguage1234(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#yBo3E2X4"
 	numberTests++
-	if err = createNewUser_400_InvalidLanguage(env); err != nil {
+	if err = signUp_400_InvalidLanguage(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#9C73chj1"
 	numberTests++
-	if err = createNewUser_400_InvalidEmail(env); err != nil {
+	if err = signUp_400_InvalidEmail(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#tc9Id2BU"
 	numberTests++
-	if err = createNewUser_409_InvalidInviteCode(env); err != nil {
+	if err = signUp_409_InvalidInviteCode(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#VDR1Hmzv"
 	numberTests++
-	if err = createNewUser_409_UserAlreadyExist0(env); err != nil {
+	if err = signUp_409_UserAlreadyExist0(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#nRIxV62A"
 	numberTests++
-	if err = createNewUser_202_Email1(env); err != nil {
+	if err = signUp_204_Email1(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#dREV5jQx"
 	numberTests++
-	if err = createNewUser_409_UserAlreadyExist1(env); err != nil {
+	if err = signUp_409_UserAlreadyExist1(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#dREV5jQx"
 	numberTests++
-	if err = createNewUser_409_UserAlreadyExist1(env); err != nil {
+	if err = signUp_409_UserAlreadyExist1(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#Dyr5SSNC"
 	numberTests++
-	if err = createNewUser_202_Email2(env); err != nil {
+	if err = signUp_204_Email2(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#DwStF6M0"
 	numberTests++
-	if err = createNewUser_409_UserAlreadyExist2(env); err != nil {
+	if err = signUp_409_UserAlreadyExist2(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
@@ -150,7 +150,7 @@ func RunTests(env *c.Env) (int, error) {
 
 	testID = "#DwStF6M0"
 	numberTests++
-	if err = createNewUser_409_UserAlreadyExist2(env); err != nil {
+	if err = signUp_409_UserAlreadyExist2(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 

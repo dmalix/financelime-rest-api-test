@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func createNewUser_400_NoHeaderRequestID(env *c.Env) error {
+func signUp_400_NoHeaderRequestID(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -46,7 +46,7 @@ func createNewUser_400_NoHeaderRequestID(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_400_NoHeaderContentType(env *c.Env) error {
+func signUp_400_NoHeaderContentType(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -80,7 +80,7 @@ func createNewUser_400_NoHeaderContentType(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_400_InvalidLanguageDe(env *c.Env) error {
+func signUp_400_InvalidLanguageDe(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -115,7 +115,7 @@ func createNewUser_400_InvalidLanguageDe(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_400_InvalidLanguage1234(env *c.Env) error {
+func signUp_400_InvalidLanguage1234(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -150,7 +150,7 @@ func createNewUser_400_InvalidLanguage1234(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_400_InvalidLanguage(env *c.Env) error {
+func signUp_400_InvalidLanguage(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -185,7 +185,7 @@ func createNewUser_400_InvalidLanguage(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_400_InvalidEmail(env *c.Env) error {
+func signUp_400_InvalidEmail(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -220,7 +220,7 @@ func createNewUser_400_InvalidEmail(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_409_InvalidInviteCode(env *c.Env) error {
+func signUp_409_InvalidInviteCode(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -255,7 +255,7 @@ func createNewUser_409_InvalidInviteCode(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_409_UserAlreadyExist0(env *c.Env) error {
+func signUp_409_UserAlreadyExist0(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -290,12 +290,12 @@ func createNewUser_409_UserAlreadyExist0(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_202_Email1(env *c.Env) error {
+func signUp_204_Email1(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
 		endpoint           = "/v1/signup"
-		statusCodeExpected = 202
+		statusCodeExpected = 204
 	)
 
 	var (
@@ -330,7 +330,7 @@ func createNewUser_202_Email1(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_409_UserAlreadyExist1(env *c.Env) error {
+func signUp_409_UserAlreadyExist1(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
@@ -365,12 +365,12 @@ func createNewUser_409_UserAlreadyExist1(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_202_Email2(env *c.Env) error {
+func signUp_204_Email2(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
 		endpoint           = "/v1/signup"
-		statusCodeExpected = 202
+		statusCodeExpected = 204
 	)
 
 	var (
@@ -400,7 +400,7 @@ func createNewUser_202_Email2(env *c.Env) error {
 	return nil
 }
 
-func createNewUser_409_UserAlreadyExist2(env *c.Env) error {
+func signUp_409_UserAlreadyExist2(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
