@@ -32,7 +32,8 @@ type jwt struct {
 }
 
 type session struct {
-	PublicSessionID string    `json:"id"`
+	PublicSessionID string    `json:"publicSessionID"`
+	UserData        string    `json:"userData"`
 	UpdatedAt       time.Time `json:"updatedAt"`
 	Platform        string    `json:"platform"`
 }
