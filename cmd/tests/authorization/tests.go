@@ -20,7 +20,7 @@ func RunTests(env *c.Env) (int, error) {
 		indentBeforeStatus string
 		linkKey            string
 		newPassword        string
-		publicSessionID    string
+		sessionID          string
 		accessToken        string
 		refreshToken       string
 	)
@@ -184,7 +184,7 @@ func RunTests(env *c.Env) (int, error) {
 
 	testID = "#Kp0gJ1mm"
 	numberTests++
-	if accessToken, refreshToken, err = requestAccessToken_200(env, newPassword); err != nil {
+	if sessionID, accessToken, refreshToken, err = requestAccessToken_200(env, newPassword); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
@@ -218,19 +218,19 @@ func RunTests(env *c.Env) (int, error) {
 
 	testID = "#MOi0O3GS"
 	numberTests++
-	if err = getListActiveSessions_403_NoHeaderAuthorization(env); err != nil {
+	if err = getListActiveSessions_401_NoHeaderAuthorization(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#jg7U4TDR"
 	numberTests++
-	if err = getListActiveSessions_403_InvalidAccessToken(env, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW5hbmNlbGltZS5jb20iLCJzdWIiOiJBdXRob3JpemF0aW9uIiwicHVycG9zZSI6ImFjY2VzcyIsImlkIjoiMTZkN2RiNTM3MjQ3ZWFmMTEzZjRjOGFkNTllOWEyYTU4OWNlN2NhZjYxMzViY2Q3YmZlYzBiNTI1YWY0OGEyYSIsImlhdCI6MTU5NjgzNTM5OX0.d68bea3232f10c60483f838fff8d8c66661cb497b141213c9a006be2e7c9d723"); err != nil {
+	if err = getListActiveSessions_401_InvalidAccessToken(env, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW5hbmNlbGltZS5jb20iLCJzdWIiOiJBdXRob3JpemF0aW9uIiwicHVycG9zZSI6ImFjY2VzcyIsImlkIjoiMTZkN2RiNTM3MjQ3ZWFmMTEzZjRjOGFkNTllOWEyYTU4OWNlN2NhZjYxMzViY2Q3YmZlYzBiNTI1YWY0OGEyYSIsImlhdCI6MTU5NjgzNTM5OX0.d68bea3232f10c60483f838fff8d8c66661cb497b141213c9a006be2e7c9d723"); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#C9a10Hr1"
 	numberTests++
-	if err = getListActiveSessions_403_NoBearerValueIntoHeaderAuthorization(env, accessToken); err != nil {
+	if err = getListActiveSessions_401_NoBearerValueIntoHeaderAuthorization(env, accessToken); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
@@ -248,7 +248,7 @@ func RunTests(env *c.Env) (int, error) {
 
 	testID = "#KnGUxH36"
 	numberTests++
-	if err = getListActiveSessions_200(env, accessToken); err != nil {
+	if err = getListActiveSessions_200(env, accessToken, sessionID); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
@@ -296,13 +296,13 @@ func RunTests(env *c.Env) (int, error) {
 
 	testID = "#9CGhxsWz"
 	numberTests++
-	if publicSessionID, accessToken, refreshToken, err = refreshAccessToken_200(env, refreshToken); err != nil {
+	if _, accessToken, refreshToken, err = refreshAccessToken_200(env, refreshToken); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#n4XHQkCf"
 	numberTests++
-	if err = getListActiveSessions_200(env, accessToken); err != nil {
+	if err = getListActiveSessions_200(env, accessToken, sessionID); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
@@ -320,37 +320,37 @@ func RunTests(env *c.Env) (int, error) {
 
 	testID = "#M678F5tr"
 	numberTests++
-	if err = revokeAccessToken_400_NoHeaderRequestID(env, accessToken, publicSessionID); err != nil {
+	if err = revokeAccessToken_400_NoHeaderRequestID(env, accessToken, sessionID); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#2NKyviy2"
 	numberTests++
-	if err = revokeAccessToken_400_NoHeaderContentType(env, accessToken, publicSessionID); err != nil {
+	if err = revokeAccessToken_400_NoHeaderContentType(env, accessToken, sessionID); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#Wp4oRz1n"
 	numberTests++
-	if err = revokeAccessToken_405_InvalidMethodPut(env, accessToken, publicSessionID); err != nil {
+	if err = revokeAccessToken_405_InvalidMethodPut(env, accessToken, sessionID); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#wz0FKQHO"
 	numberTests++
-	if err = revokeAccessToken_405_InvalidMethodGet(env, accessToken, publicSessionID); err != nil {
+	if err = revokeAccessToken_405_InvalidMethodGet(env, accessToken, sessionID); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#Gq7dHBlM"
 	numberTests++
-	if err = revokeAccessToken_200(env, accessToken, publicSessionID); err != nil {
+	if err = revokeAccessToken_200(env, accessToken, sessionID); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#7JGP0R3o"
 	numberTests++
-	if err = getListActiveSessions_403_InvalidAccessToken(env, accessToken); err != nil {
+	if err = getListActiveSessions_401_InvalidAccessToken(env, accessToken); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 

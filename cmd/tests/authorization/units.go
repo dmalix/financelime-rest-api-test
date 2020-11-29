@@ -841,11 +841,13 @@ func confirmPasswordReset_404(env *c.Env, pLinkKey string) error {
 	return nil
 }
 
-//	Return:
-//		accessToken string
-//		refreshToken string
-//		error
-func requestAccessToken_200(env *c.Env, pPassword string) (string, string, error) {
+/*	Return:
+	sessionID    string
+	accessToken	 string
+	refreshToken string
+	err          error
+*/
+func requestAccessToken_200(env *c.Env, pPassword string) (string, string, string, error) {
 
 	const (
 		method             = http.MethodPost
@@ -860,6 +862,7 @@ func requestAccessToken_200(env *c.Env, pPassword string) (string, string, error
 		response     jwt
 		responseJson []byte
 		statusCode   int
+		sessionID    string
 		accessToken  string
 		refreshToken string
 	)
@@ -878,32 +881,34 @@ func requestAccessToken_200(env *c.Env, pPassword string) (string, string, error
 
 	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, &response)
 	if err != nil {
-		return accessToken, refreshToken,
+		return sessionID, accessToken, refreshToken,
 			errors.New(fmt.Sprintf("Failed to complete the request [%s]", err))
 	}
 	if statusCode != statusCodeExpected {
-		return accessToken, refreshToken,
+		return sessionID, accessToken, refreshToken,
 			errors.New(fmt.Sprintf("REST-API service returned wrong status code: got %v want %v",
 				strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
 	}
 
-	if len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
+	if len(response.SessionID) == 0 || len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
 		responseJson, err = json.Marshal(response)
 		if err != nil {
-			return accessToken, refreshToken,
+			return sessionID, accessToken, refreshToken,
 				errors.New("failed to convert response data to JSON-format")
 		}
-		return accessToken, refreshToken,
-			errors.New(fmt.Sprintf("REST-API service returned empty value: [%s, %s] %s",
+		return sessionID, accessToken, refreshToken,
+			errors.New(fmt.Sprintf("REST-API service returned empty value: [%s, %s, %s] %s",
+				strconv.Itoa(len(response.SessionID)),
 				strconv.Itoa(len(response.AccessToken)),
 				strconv.Itoa(len(response.RefreshToken)),
 				string(responseJson)))
 	}
 
+	sessionID = response.SessionID
 	accessToken = response.AccessToken
 	refreshToken = response.RefreshToken
 
-	return accessToken, refreshToken, nil
+	return sessionID, accessToken, refreshToken, nil
 }
 
 func getEmailAboutLoginAction(env *c.Env) error {
@@ -985,12 +990,12 @@ func getEmailAboutLoginAction(env *c.Env) error {
 	}
 }
 
-func getListActiveSessions_403_NoHeaderAuthorization(env *c.Env) error {
+func getListActiveSessions_401_NoHeaderAuthorization(env *c.Env) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/account/oauth/sessions"
-		statusCodeExpected = 403
+		endpoint           = "/v1/oauth/sessions"
+		statusCodeExpected = 401
 	)
 
 	var (
@@ -1014,12 +1019,12 @@ func getListActiveSessions_403_NoHeaderAuthorization(env *c.Env) error {
 	return nil
 }
 
-func getListActiveSessions_403_InvalidAccessToken(env *c.Env, pAccessToken string) error {
+func getListActiveSessions_401_InvalidAccessToken(env *c.Env, pAccessToken string) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/account/oauth/sessions"
-		statusCodeExpected = 403
+		endpoint           = "/v1/oauth/sessions"
+		statusCodeExpected = 401
 	)
 
 	var (
@@ -1045,12 +1050,12 @@ func getListActiveSessions_403_InvalidAccessToken(env *c.Env, pAccessToken strin
 	return nil
 }
 
-func getListActiveSessions_403_NoBearerValueIntoHeaderAuthorization(env *c.Env, pAccessToken string) error {
+func getListActiveSessions_401_NoBearerValueIntoHeaderAuthorization(env *c.Env, pAccessToken string) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/account/oauth/sessions"
-		statusCodeExpected = 403
+		endpoint           = "/v1/oauth/sessions"
+		statusCodeExpected = 401
 	)
 
 	var (
@@ -1080,7 +1085,7 @@ func getListActiveSessions_400_NoHeaderRequestID(env *c.Env, pAccessToken string
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/account/oauth/sessions"
+		endpoint           = "/v1/oauth/sessions"
 		statusCodeExpected = 400
 	)
 
@@ -1110,7 +1115,7 @@ func getListActiveSessions_405_InvalidMethodPost(env *c.Env, pAccessToken string
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/oauth/sessions"
+		endpoint           = "/v1/oauth/sessions"
 		statusCodeExpected = 405
 	)
 
@@ -1137,11 +1142,11 @@ func getListActiveSessions_405_InvalidMethodPost(env *c.Env, pAccessToken string
 	return nil
 }
 
-func getListActiveSessions_200(env *c.Env, pAccessToken string) error {
+func getListActiveSessions_200(env *c.Env, accessToken, sessionID string) error {
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/account/oauth/sessions"
+		endpoint           = "/v1/oauth/sessions"
 		statusCodeExpected = 200
 	)
 
@@ -1154,7 +1159,7 @@ func getListActiveSessions_200(env *c.Env, pAccessToken string) error {
 
 	headers = make(map[string]string)
 	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
-	headers["authorization"] = fmt.Sprintf("bearer %s", pAccessToken)
+	headers["authorization"] = fmt.Sprintf("bearer %s", accessToken)
 
 	statusCode, err = u.HttpClient(env, method, endpoint, headers, nil, &response)
 	if err != nil {
@@ -1169,9 +1174,9 @@ func getListActiveSessions_200(env *c.Env, pAccessToken string) error {
 		return errors.New("REST-API service returned empty response")
 	}
 
-	if len(response[0].PublicSessionID) == 0 {
-		return errors.New(fmt.Sprintf("REST-API service returned empty value [%v, %v, %v]",
-			response[0].PublicSessionID, response[0].UpdatedAt, response[0].Platform))
+	if response[0].SessionID != sessionID {
+		return errors.New(fmt.Sprintf("REST-API service returned the wrong sessionID value: got %v want %v",
+			response[0].SessionID, sessionID))
 	}
 
 	return nil

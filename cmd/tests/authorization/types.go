@@ -27,15 +27,16 @@ type device struct {
 }
 
 type jwt struct {
+	SessionID    string `json:"sessionID"`
 	AccessToken  string `json:"accessToken"`
 	RefreshToken string `json:"refreshToken"`
 }
 
 type session struct {
-	PublicSessionID string    `json:"publicSessionID"`
-	UserData        string    `json:"userData"`
-	UpdatedAt       time.Time `json:"updatedAt"`
-	Platform        string    `json:"platform"`
+	SessionID string    `json:"sessionID"`
+	UserData  string    `json:"userData"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Platform  string    `json:"platform"`
 }
 
 type refreshToken struct {
