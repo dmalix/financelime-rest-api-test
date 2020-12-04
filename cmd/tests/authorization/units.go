@@ -851,7 +851,7 @@ func requestAccessToken_200(env *c.Env, pPassword string) (string, string, strin
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/v1/oauth/token/request"
+		endpoint           = "/v1/oauth/token"
 		statusCodeExpected = 200
 	)
 
@@ -1186,8 +1186,8 @@ func refreshAccessToken_403_InvalidRefreshToken(env *c.Env) error {
 
 	const (
 		method             = http.MethodPut
-		endpoint           = "/account/oauth/token"
-		statusCodeExpected = 403
+		endpoint           = "/v1/oauth/token"
+		statusCodeExpected = 404
 	)
 
 	var (
@@ -1220,7 +1220,7 @@ func refreshAccessToken_400_NoHeaderContentType(env *c.Env, pRefreshToken string
 
 	const (
 		method             = http.MethodPut
-		endpoint           = "/account/oauth/token"
+		endpoint           = "/v1/oauth/token"
 		statusCodeExpected = 400
 	)
 
@@ -1253,7 +1253,7 @@ func refreshAccessToken_400_NoHeaderRequestID(env *c.Env, pRefreshToken string) 
 
 	const (
 		method             = http.MethodPut
-		endpoint           = "/account/oauth/token"
+		endpoint           = "/v1/oauth/token"
 		statusCodeExpected = 400
 	)
 
@@ -1286,7 +1286,7 @@ func refreshAccessToken_400_InvalidMethodPost(env *c.Env, pRefreshToken string) 
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/oauth/token"
+		endpoint           = "/v1/oauth/token"
 		statusCodeExpected = 400
 	)
 
@@ -1320,7 +1320,7 @@ func refreshAccessToken_405_InvalidMethodGet(env *c.Env, pRefreshToken string) e
 
 	const (
 		method             = http.MethodGet
-		endpoint           = "/account/oauth/token"
+		endpoint           = "/v1/oauth/token"
 		statusCodeExpected = 405
 	)
 
@@ -1359,7 +1359,7 @@ func refreshAccessToken_200(env *c.Env, pRefreshToken string) (string, string, s
 
 	const (
 		method             = http.MethodPut
-		endpoint           = "/account/oauth/token"
+		endpoint           = "/v1/oauth/token"
 		statusCodeExpected = 200
 	)
 
