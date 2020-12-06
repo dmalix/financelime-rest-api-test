@@ -890,7 +890,7 @@ func requestAccessToken_200(env *c.Env, pPassword string) (string, string, strin
 				strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
 	}
 
-	if len(response.SessionID) == 0 || len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
+	if len(response.PublicSessionID) == 0 || len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
 		responseJson, err = json.Marshal(response)
 		if err != nil {
 			return sessionID, accessToken, refreshToken,
@@ -898,13 +898,13 @@ func requestAccessToken_200(env *c.Env, pPassword string) (string, string, strin
 		}
 		return sessionID, accessToken, refreshToken,
 			errors.New(fmt.Sprintf("REST-API service returned empty value: [%s, %s, %s] %s",
-				strconv.Itoa(len(response.SessionID)),
+				strconv.Itoa(len(response.PublicSessionID)),
 				strconv.Itoa(len(response.AccessToken)),
 				strconv.Itoa(len(response.RefreshToken)),
 				string(responseJson)))
 	}
 
-	sessionID = response.SessionID
+	sessionID = response.PublicSessionID
 	accessToken = response.AccessToken
 	refreshToken = response.RefreshToken
 
@@ -1035,8 +1035,7 @@ func getListActiveSessions_401_InvalidAccessToken(env *c.Env, pAccessToken strin
 
 	headers = make(map[string]string)
 	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
-	headers["authorization"] = fmt.Sprintf(
-		"bearer %s", pAccessToken)
+	headers["authorization"] = fmt.Sprintf("bearer %s", pAccessToken)
 
 	statusCode, err = u.HttpClient(env, method, endpoint, headers, nil, nil)
 	if err != nil {
@@ -1216,7 +1215,7 @@ func refreshAccessToken_403_InvalidRefreshToken(env *c.Env) error {
 	return nil
 }
 
-func refreshAccessToken_400_NoHeaderContentType(env *c.Env, pRefreshToken string) error {
+func refreshAccessToken_400_NoHeaderContentType(env *c.Env, propRefreshToken string) error {
 
 	const (
 		method             = http.MethodPut
@@ -1235,7 +1234,7 @@ func refreshAccessToken_400_NoHeaderContentType(env *c.Env, pRefreshToken string
 	headers = make(map[string]string)
 	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
 
-	props.RefreshToken = pRefreshToken
+	props.RefreshToken = propRefreshToken
 
 	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, &response)
 	if err != nil {
@@ -1249,7 +1248,7 @@ func refreshAccessToken_400_NoHeaderContentType(env *c.Env, pRefreshToken string
 	return nil
 }
 
-func refreshAccessToken_400_NoHeaderRequestID(env *c.Env, pRefreshToken string) error {
+func refreshAccessToken_400_NoHeaderRequestID(env *c.Env, propRefreshToken string) error {
 
 	const (
 		method             = http.MethodPut
@@ -1268,7 +1267,7 @@ func refreshAccessToken_400_NoHeaderRequestID(env *c.Env, pRefreshToken string) 
 	headers = make(map[string]string)
 	headers["content-type"] = "application/json;charset=utf-8"
 
-	props.RefreshToken = pRefreshToken
+	props.RefreshToken = propRefreshToken
 
 	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, &response)
 	if err != nil {
@@ -1282,7 +1281,7 @@ func refreshAccessToken_400_NoHeaderRequestID(env *c.Env, pRefreshToken string) 
 	return nil
 }
 
-func refreshAccessToken_400_InvalidMethodPost(env *c.Env, pRefreshToken string) error {
+func refreshAccessToken_400_InvalidMethodPost(env *c.Env, propRefreshToken string) error {
 
 	const (
 		method             = http.MethodPost
@@ -1302,7 +1301,7 @@ func refreshAccessToken_400_InvalidMethodPost(env *c.Env, pRefreshToken string) 
 	headers["content-type"] = "application/json;charset=utf-8"
 	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
 
-	props.RefreshToken = pRefreshToken
+	props.RefreshToken = propRefreshToken
 
 	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, &response)
 	if err != nil {
@@ -1316,7 +1315,7 @@ func refreshAccessToken_400_InvalidMethodPost(env *c.Env, pRefreshToken string) 
 	return nil
 }
 
-func refreshAccessToken_405_InvalidMethodGet(env *c.Env, pRefreshToken string) error {
+func refreshAccessToken_405_InvalidMethodGet(env *c.Env, propRefreshToken string) error {
 
 	const (
 		method             = http.MethodGet
@@ -1336,7 +1335,7 @@ func refreshAccessToken_405_InvalidMethodGet(env *c.Env, pRefreshToken string) e
 	headers["content-type"] = "application/json;charset=utf-8"
 	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
 
-	props.RefreshToken = pRefreshToken
+	props.RefreshToken = propRefreshToken
 
 	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, &response)
 	if err != nil {
@@ -1350,231 +1349,72 @@ func refreshAccessToken_405_InvalidMethodGet(env *c.Env, pRefreshToken string) e
 	return nil
 }
 
-//	Return:
-//		publicSessionID string
-//		accessToken string
-//		refreshToken string
-//		error
-func refreshAccessToken_200(env *c.Env, pRefreshToken string) (string, string, string, error) {
-
-	const (
-		method             = http.MethodPut
-		endpoint           = "/v1/oauth/token"
-		statusCodeExpected = 200
-	)
+/*	Return:
+	publicSessionID   string
+	accessToken       string
+	refreshToken      string
+	err               error
+*/
+func refreshAccessToken(env *c.Env, refreshToken, method, endpoint,
+	headerContentType, headerRequestID string, statusCodeExpected int, checkLengthOfResponseValues bool) (string, string, string, error) {
 
 	var (
-		err             error
-		headers         map[string]string
-		props           refreshToken
+		err     error
+		headers map[string]string
+		props   struct {
+			RefreshToken string `json:"refreshToken"`
+		}
 		response        jwt
 		responseJson    []byte
 		statusCode      int
 		publicSessionID string
-		accessToken     string
-		refreshToken    string
+		jwtAccess       string
+		jwtRefresh      string
 	)
 
 	headers = make(map[string]string)
-	headers["content-type"] = "application/json;charset=utf-8"
-	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
+	if len(headerContentType) > 0 {
+		headers["content-type"] = headerContentType
+	}
+	if len(headerRequestID) > 0 {
+		headers["request-id"] = headerRequestID
+	}
 
-	props.RefreshToken = pRefreshToken
+	props.RefreshToken = refreshToken
 
 	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, &response)
 	if err != nil {
-		return publicSessionID, accessToken, refreshToken,
+		return publicSessionID, jwtAccess, jwtRefresh,
 			errors.New(fmt.Sprintf("Failed to complete the request [%s]", err))
 	}
 	if statusCode != statusCodeExpected {
-		return publicSessionID, accessToken, refreshToken,
+		return publicSessionID, jwtAccess, jwtRefresh,
 			errors.New(fmt.Sprintf("REST-API service returned wrong status code: got %v want %v",
 				strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
 	}
 
-	if len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
-		responseJson, err = json.Marshal(response)
-		if err != nil {
-			return publicSessionID, accessToken, refreshToken,
-				errors.New("failed to convert response data to JSON-format")
+	if checkLengthOfResponseValues {
+
+		if len(response.PublicSessionID) == 0 || len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
+			responseJson, err = json.Marshal(response)
+			if err != nil {
+				return publicSessionID, jwtAccess, jwtRefresh,
+					errors.New("failed to convert response data to JSON-format")
+			}
+			return publicSessionID, jwtAccess, jwtRefresh,
+				errors.New(fmt.Sprintf("REST-API service returned empty value [%d, %d, %d]: %s",
+					len(response.PublicSessionID),
+					len(response.AccessToken),
+					len(response.RefreshToken),
+					string(responseJson)))
 		}
-		return publicSessionID, accessToken, refreshToken,
-			errors.New(fmt.Sprintf("REST-API service returned empty value [%v, %v]: %s",
-				strconv.Itoa(len(response.AccessToken)),
-				strconv.Itoa(len(response.RefreshToken)),
-				string(responseJson)))
+
 	}
 
-	accessToken = response.AccessToken
-	refreshToken = response.RefreshToken
+	jwtAccess = response.AccessToken
+	jwtRefresh = response.RefreshToken
+	publicSessionID = response.PublicSessionID
 
-	return publicSessionID, accessToken, refreshToken, nil
+	return publicSessionID, jwtAccess, jwtRefresh, nil
 }
 
-func revokeAccessToken_400_NoHeaderRequestID(env *c.Env, pAccessToken string, pPublicSessionID string) error {
-
-	const (
-		method             = http.MethodPost
-		endpoint           = "/account/oauth/revoke"
-		statusCodeExpected = 400
-	)
-
-	var (
-		err        error
-		headers    map[string]string
-		props      revokeAccessToken
-		statusCode int
-	)
-
-	headers = make(map[string]string)
-	headers["content-type"] = "application/json;charset=utf-8"
-	headers["authorization"] = fmt.Sprintf("bearer %s", pAccessToken)
-
-	props.PublicSessionID = pPublicSessionID
-
-	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, nil)
-	if err != nil {
-		return errors.New(fmt.Sprintf("Failed to complete the request [%s]", err))
-	}
-	if statusCode != statusCodeExpected {
-		return errors.New(fmt.Sprintf("REST-API service returned wrong status code: got %v want %v",
-			strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
-	}
-
-	return nil
-}
-
-func revokeAccessToken_400_NoHeaderContentType(env *c.Env, pAccessToken string, pPublicSessionID string) error {
-
-	const (
-		method             = http.MethodPost
-		endpoint           = "/account/oauth/revoke"
-		statusCodeExpected = 400
-	)
-
-	var (
-		err        error
-		headers    map[string]string
-		props      revokeAccessToken
-		statusCode int
-	)
-
-	headers = make(map[string]string)
-	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
-	headers["authorization"] = fmt.Sprintf("bearer %s", pAccessToken)
-
-	props.PublicSessionID = pPublicSessionID
-
-	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, nil)
-	if err != nil {
-		return errors.New(fmt.Sprintf("Failed to complete the request [%s]", err))
-	}
-	if statusCode != statusCodeExpected {
-		return errors.New(fmt.Sprintf("REST-API service returned wrong status code: got %v want %v",
-			strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
-	}
-
-	return nil
-}
-
-func revokeAccessToken_405_InvalidMethodPut(env *c.Env, pAccessToken string, pPublicSessionID string) error {
-
-	const (
-		method             = http.MethodPut
-		endpoint           = "/account/oauth/revoke"
-		statusCodeExpected = 405
-	)
-
-	var (
-		err        error
-		headers    map[string]string
-		props      revokeAccessToken
-		statusCode int
-	)
-
-	headers = make(map[string]string)
-	headers["content-type"] = "application/json;charset=utf-8"
-	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
-	headers["authorization"] = fmt.Sprintf("bearer %s", pAccessToken)
-
-	props.PublicSessionID = pPublicSessionID
-
-	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, nil)
-	if err != nil {
-		return errors.New(fmt.Sprintf("Failed to complete the request [%s]", err))
-	}
-	if statusCode != statusCodeExpected {
-		return errors.New(fmt.Sprintf("REST-API service returned wrong status code: got %v want %v",
-			strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
-	}
-
-	return nil
-}
-
-func revokeAccessToken_405_InvalidMethodGet(env *c.Env, pAccessToken string, pPublicSessionID string) error {
-
-	const (
-		method             = http.MethodGet
-		endpoint           = "/account/oauth/revoke"
-		statusCodeExpected = 405
-	)
-
-	var (
-		err        error
-		headers    map[string]string
-		props      revokeAccessToken
-		statusCode int
-	)
-
-	headers = make(map[string]string)
-	headers["content-type"] = "application/json;charset=utf-8"
-	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
-	headers["authorization"] = fmt.Sprintf("bearer %s", pAccessToken)
-
-	props.PublicSessionID = pPublicSessionID
-
-	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, nil)
-	if err != nil {
-		return errors.New(fmt.Sprintf("Failed to complete the request [%s]", err))
-	}
-	if statusCode != statusCodeExpected {
-		return errors.New(fmt.Sprintf("REST-API service returned wrong status code: got %v want %v",
-			strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
-	}
-
-	return nil
-}
-
-func revokeAccessToken_200(env *c.Env, pAccessToken string, pPublicSessionID string) error {
-
-	const (
-		method             = http.MethodPost
-		endpoint           = "/account/oauth/revoke"
-		statusCodeExpected = 200
-	)
-
-	var (
-		err        error
-		headers    map[string]string
-		props      revokeAccessToken
-		statusCode int
-	)
-
-	headers = make(map[string]string)
-	headers["content-type"] = "application/json;charset=utf-8"
-	headers["request-id"] = "K7800-H7625-Z5852-N1693-K1972"
-	headers["authorization"] = fmt.Sprintf("bearer %s", pAccessToken)
-
-	props.PublicSessionID = pPublicSessionID
-
-	statusCode, err = u.HttpClient(env, method, endpoint, headers, props, nil)
-	if err != nil {
-		return errors.New(fmt.Sprintf("Failed to complete the request [%s]", err))
-	}
-	if statusCode != statusCodeExpected {
-		return errors.New(fmt.Sprintf("REST-API service returned wrong status code: got %v want %v",
-			strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
-	}
-
-	return nil
-}

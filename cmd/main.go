@@ -97,7 +97,7 @@ func confirmRun(env *c.Env) error {
 	}
 	u.Colorize(u.ColorYellow, string(out), true)
 
-	out, err = exec.Command("figlet", "Financelime").Output()
+	out, err = exec.Command("figlet", "Financelime Tests").Output()
 	if err != nil {
 		u.Colorize(u.ColorRed, "Failed", true)
 		return err

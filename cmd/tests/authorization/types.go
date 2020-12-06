@@ -27,9 +27,9 @@ type device struct {
 }
 
 type jwt struct {
-	SessionID    string `json:"sessionID"`
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
+	PublicSessionID string `json:"sessionID"`
+	AccessToken     string `json:"accessToken"`
+	RefreshToken    string `json:"refreshToken"`
 }
 
 type session struct {
@@ -41,8 +41,4 @@ type session struct {
 
 type refreshToken struct {
 	RefreshToken string `json:"refreshToken"`
-}
-
-type revokeAccessToken struct {
-	PublicSessionID string `json:"id"`
 }

@@ -6,21 +6,27 @@ import (
 	c "github.com/dmalix/financelime-functional-tests/cmd/config"
 	g "github.com/dmalix/financelime-functional-tests/cmd/pgraphics"
 	u "github.com/dmalix/financelime-functional-tests/cmd/utils"
+	"net/http"
 	"strconv"
 )
+
+type checkLists int
+type tests int
+var checklist checkLists
+var test tests
 
 func RunTests(env *c.Env) (int, error) {
 
 	var (
 		err                error
 		testName           string
-		numberTests        int
-		numberTestsTotal   int
+		tests              int
+		totalTests         int
 		testID             string
 		indentBeforeStatus string
 		linkKey            string
 		newPassword        string
-		sessionID          string
+		publicSessionID    string
 		accessToken        string
 		refreshToken       string
 	)
@@ -35,133 +41,133 @@ func RunTests(env *c.Env) (int, error) {
 
 	testName = "Sign Up"
 	indentBeforeStatus = "\t\t\t\t\t\t\t\t"
-	numberTests = 0
+	tests = 0
 
 	fmt.Print(g.ItemII)
 	fmt.Print(testName, indentBeforeStatus)
 
 	testID = "#hdpFBOG7"
-	numberTests++
+	tests++
 	if err = signUp_400_NoHeaderRequestID(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#VuLq72Fi"
-	numberTests++
+	tests++
 	if err = signUp_400_NoHeaderContentType(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#T6PwbuNa"
-	numberTests++
+	tests++
 	if err = signUp_400_InvalidLanguageDe(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#02GXjc2C"
-	numberTests++
+	tests++
 	if err = signUp_400_InvalidLanguage1234(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#yBo3E2X4"
-	numberTests++
+	tests++
 	if err = signUp_400_InvalidLanguage(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#9C73chj1"
-	numberTests++
+	tests++
 	if err = signUp_400_InvalidEmail(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#tc9Id2BU"
-	numberTests++
+	tests++
 	if err = signUp_409_InvalidInviteCode(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#VDR1Hmzv"
-	numberTests++
+	tests++
 	if err = signUp_409_UserAlreadyExist0(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#nRIxV62A"
-	numberTests++
+	tests++
 	if err = signUp_204_Email1(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#dREV5jQx"
-	numberTests++
+	tests++
 	if err = signUp_409_UserAlreadyExist1(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#dREV5jQx"
-	numberTests++
+	tests++
 	if err = signUp_409_UserAlreadyExist1(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#Dyr5SSNC"
-	numberTests++
+	tests++
 	if err = signUp_204_Email2(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#DwStF6M0"
-	numberTests++
+	tests++
 	if err = signUp_409_UserAlreadyExist2(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)
-	numberTestsTotal = numberTestsTotal + numberTests
+	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
+	totalTests = totalTests + tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	testName = "Confirm user email (+30 sec of waiting)"
 	indentBeforeStatus = "\t\t\t\t"
-	numberTests = 0
+	tests = 0
 
 	fmt.Print(g.ItemII)
 	fmt.Print(testName, indentBeforeStatus)
 
 	testID = "#G7zv5jx4"
-	numberTests++
+	tests++
 	if err = confirmEmail_404_InvalidEndPoint123456789(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#1iSKofF8"
-	numberTests++
+	tests++
 	if linkKey, err = confirmEmail_200(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#eJ7RFkI5"
-	numberTests++
+	tests++
 	if err = confirmEmail_404(env, linkKey); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#DwStF6M0"
-	numberTests++
+	tests++
 	if err = signUp_409_UserAlreadyExist2(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)
-	numberTestsTotal = numberTestsTotal + numberTests
+	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
+	totalTests = totalTests + tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	testName = "Get a password from the email (+30 sec of waiting)"
 	indentBeforeStatus = "\t\t\t"
-	numberTests = 0
+	tests = 0
 
 	fmt.Print(g.ItemII)
 	fmt.Print(testName, indentBeforeStatus)
@@ -177,25 +183,25 @@ func RunTests(env *c.Env) (int, error) {
 
 	testName = "Request Access Token"
 	indentBeforeStatus = "\t\t\t\t\t\t\t"
-	numberTests = 0
+	tests = 0
 
 	fmt.Print(g.ItemII)
 	fmt.Print(testName, indentBeforeStatus)
 
 	testID = "#Kp0gJ1mm"
-	numberTests++
-	if sessionID, accessToken, refreshToken, err = requestAccessToken_200(env, newPassword); err != nil {
+	tests++
+	if publicSessionID, accessToken, refreshToken, err = requestAccessToken_200(env, newPassword); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)
-	numberTestsTotal = numberTestsTotal + numberTests
+	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
+	totalTests = totalTests + tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	testName = "Get an email about a login action (+30 sec of waiting)"
 	indentBeforeStatus = "\t\t"
-	numberTests = 0
+	tests = 0
 
 	fmt.Print(g.ItemII)
 	fmt.Print(testName, indentBeforeStatus)
@@ -211,206 +217,217 @@ func RunTests(env *c.Env) (int, error) {
 
 	testName = "Get a list of active sessions"
 	indentBeforeStatus = "\t\t\t\t\t\t"
-	numberTests = 0
+	tests = 0
 
 	fmt.Print(g.ItemII)
 	fmt.Print(testName, indentBeforeStatus)
 
 	testID = "#MOi0O3GS"
-	numberTests++
+	tests++
 	if err = getListActiveSessions_401_NoHeaderAuthorization(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#jg7U4TDR"
-	numberTests++
+	tests++
 	if err = getListActiveSessions_401_InvalidAccessToken(env, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW5hbmNlbGltZS5jb20iLCJzdWIiOiJBdXRob3JpemF0aW9uIiwicHVycG9zZSI6ImFjY2VzcyIsImlkIjoiMTZkN2RiNTM3MjQ3ZWFmMTEzZjRjOGFkNTllOWEyYTU4OWNlN2NhZjYxMzViY2Q3YmZlYzBiNTI1YWY0OGEyYSIsImlhdCI6MTU5NjgzNTM5OX0.d68bea3232f10c60483f838fff8d8c66661cb497b141213c9a006be2e7c9d723"); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#C9a10Hr1"
-	numberTests++
+	tests++
 	if err = getListActiveSessions_401_NoBearerValueIntoHeaderAuthorization(env, accessToken); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#VaK6YsxC"
-	numberTests++
+	tests++
 	if err = getListActiveSessions_400_NoHeaderRequestID(env, accessToken); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#6R5YXIzJ"
-	numberTests++
+	tests++
 	if err = getListActiveSessions_405_InvalidMethodPost(env, accessToken); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#KnGUxH36"
-	numberTests++
-	if err = getListActiveSessions_200(env, accessToken, sessionID); err != nil {
+	tests++
+	if err = getListActiveSessions_200(env, accessToken, publicSessionID); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)
-	numberTestsTotal = numberTestsTotal + numberTests
+	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
+	totalTests = totalTests + tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	testName = "Refresh Access Token"
 	indentBeforeStatus = "\t\t\t\t\t\t\t"
-	numberTests = 0
+	tests = 0
 
 	fmt.Print(g.ItemII)
 	fmt.Print(testName, indentBeforeStatus)
 
-	testID = "#pWs8HJ4F"
-	numberTests++
-	if err = refreshAccessToken_403_InvalidRefreshToken(env); err != nil {
+	testID = "#pWs8HJ4F" // Invalid Refresh Token
+	tests++
+	_, _, _, err = refreshAccessToken(env,
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW5hbmNlbGltZS5jb20iLCJzdWIiOiJBdXRob3JpemF0aW9uIiwicHVycG9zZSI6InJlZnJlc2giLCJpZCI6IjE2ZDdkYjUzNzI0N2VhZjExM2Y0YzhhZDU5ZTlhMmE1ODljZTdjYWY2MTM1YmNkN2JmZWMwYjUyNWFmNDhhMmEiLCJpYXQiOjE1OTY4MzUzOTl9.b88345d361482865f1a7af533d41d66e922dcca4c76c2d4b1fcfa65616679471",
+		http.MethodPut,
+		"/v1/oauth/token",
+		"application/json;charset=utf-8",
+		"K7800-H7625-Z5852-N1693-K1972",
+		404,
+		false)
+	if err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	testID = "#Xhca9hTB"
-	numberTests++
-	if err = refreshAccessToken_400_NoHeaderContentType(env, refreshToken); err != nil {
+	testID = "#Xhca9hTB" // No the ContentType header
+	tests++
+	_, _, _, err = refreshAccessToken(env,
+		"",
+		http.MethodPut,
+		"/v1/oauth/token",
+		"",
+		"K7800-H7625-Z5852-N1693-K1972",
+		400,
+		false)
+	if err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	testID = "#cdWR7DgQ"
-	numberTests++
-	if err = refreshAccessToken_400_NoHeaderRequestID(env, refreshToken); err != nil {
+	testID = "#cdWR7DgQ" // No the RequestID Header
+	tests++
+	_, _, _, err = refreshAccessToken(env,
+		"",
+		http.MethodPut,
+		"/v1/oauth/token",
+		"application/json;charset=utf-8",
+		"",
+		400,
+		false)
+	if err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	testID = "#EDOv5oJ6"
-	numberTests++
-	if err = refreshAccessToken_400_InvalidMethodPost(env, refreshToken); err != nil {
+	testID = "#EDOv5oJ6" // Invalid the GET method
+	tests++
+	_, _, _, err = refreshAccessToken(env,
+		"",
+		http.MethodGet,
+		"/v1/oauth/token",
+		"application/json;charset=utf-8",
+		"K7800-H7625-Z5852-N1693-K1972",
+		405,
+		false)
+	if err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	testID = "#Wm1PBdVN"
-	numberTests++
-	if err = refreshAccessToken_405_InvalidMethodGet(env, refreshToken); err != nil {
+	testID = "#Wm1PBdVN" // Invalid the DELETE method
+	tests++
+	_, _, _, err = refreshAccessToken(env,
+		"",
+		http.MethodDelete,
+		"/v1/oauth/token",
+		"application/json;charset=utf-8",
+		"K7800-H7625-Z5852-N1693-K1972",
+		405,
+		false)
+	if err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	testID = "#9CGhxsWz"
-	numberTests++
-	if _, accessToken, refreshToken, err = refreshAccessToken_200(env, refreshToken); err != nil {
+	testID = "#9CGhxsWz" // OK
+	tests++
+	_, accessToken, refreshToken, err = refreshAccessToken(env,
+		refreshToken,
+		http.MethodPut,
+		"/v1/oauth/token",
+		"application/json;charset=utf-8",
+		"K7800-H7625-Z5852-N1693-K1972",
+		200,
+		true)
+	if err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#n4XHQkCf"
-	numberTests++
-	if err = getListActiveSessions_200(env, accessToken, sessionID); err != nil {
+	tests++
+	if err = getListActiveSessions_200(env, accessToken, publicSessionID); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)
-	numberTestsTotal = numberTestsTotal + numberTests
+	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
+	totalTests = totalTests + tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Revoke Access Token"
-	indentBeforeStatus = "\t\t\t\t\t\t\t"
-	numberTests = 0
-
-	fmt.Print(g.ItemII)
-	fmt.Print(testName, indentBeforeStatus)
-
-	testID = "#M678F5tr"
-	numberTests++
-	if err = revokeAccessToken_400_NoHeaderRequestID(env, accessToken, sessionID); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
+	tests, err = checklist.revokeRefreshToken(env, accessToken, refreshToken, publicSessionID)
+	if err != nil {
+		return totalTests, err
 	}
 
-	testID = "#2NKyviy2"
-	numberTests++
-	if err = revokeAccessToken_400_NoHeaderContentType(env, accessToken, sessionID); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#Wp4oRz1n"
-	numberTests++
-	if err = revokeAccessToken_405_InvalidMethodPut(env, accessToken, sessionID); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#wz0FKQHO"
-	numberTests++
-	if err = revokeAccessToken_405_InvalidMethodGet(env, accessToken, sessionID); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#Gq7dHBlM"
-	numberTests++
-	if err = revokeAccessToken_200(env, accessToken, sessionID); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#7JGP0R3o"
-	numberTests++
-	if err = getListActiveSessions_401_InvalidAccessToken(env, accessToken); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)
-	numberTestsTotal = numberTestsTotal + numberTests
+	totalTests = totalTests + tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	testName = "Create a password reset request"
 	indentBeforeStatus = "\t\t\t\t\t"
-	numberTests = 0
+	tests = 0
 
 	fmt.Print(g.ItemII)
 	fmt.Print(testName, indentBeforeStatus)
 
 	testID = "#fBmC8mR3"
-	numberTests++
+	tests++
 	if err = resetUserPassword_400_NoHeaderContentType(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#GQ4XEhtu"
-	numberTests++
+	tests++
 	if err = resetUserPassword_400_NoHeaderRequestID(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#M98D7nVP"
-	numberTests++
+	tests++
 	if err = resetUserPassword_202(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)
-	numberTestsTotal = numberTestsTotal + numberTests
+	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
+	totalTests = totalTests + tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	testName = "Confirm password reset (+30 sec of waiting)"
 	indentBeforeStatus = "\t\t\t\t"
-	numberTests = 0
+	tests = 0
 
 	fmt.Print(g.ItemIL)
 	fmt.Print(testName, indentBeforeStatus)
 
 	testID = "#V0pUynov"
-	numberTests++
+	tests++
 	if linkKey, err = confirmPasswordReset_200(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
 	testID = "#k42WCzaL"
-	numberTests++
+	tests++
 	if err = confirmPasswordReset_404(env, linkKey); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
 	}
 
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(numberTests)), true)
-	numberTestsTotal = numberTestsTotal + numberTests
+	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
+	totalTests = totalTests + tests
 
-	return numberTestsTotal, nil
+	return totalTests, nil
 }
+
+
