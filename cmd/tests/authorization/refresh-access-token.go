@@ -27,7 +27,6 @@ func (checkList *checkLists) refreshAccessToken(env *c.Env, refreshToken,
 	fmt.Print(checkListName, indentBeforeStatus)
 
 	testID = "#pWs8HJ4F" // Invalid Refresh Token
-	tests++
 	_, _, _, err = test.refreshAccessToken(env,
 		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW5hbmNlbGltZS5jb20iLCJzdWIiOiJBdXRob3JpemF0aW9uIiwicHVycG9zZSI6InJlZnJlc2giLCJpZCI6IjE2ZDdkYjUzNzI0N2VhZjExM2Y0YzhhZDU5ZTlhMmE1ODljZTdjYWY2MTM1YmNkN2JmZWMwYjUyNWFmNDhhMmEiLCJpYXQiOjE1OTY4MzUzOTl9.b88345d361482865f1a7af533d41d66e922dcca4c76c2d4b1fcfa65616679471",
 		http.MethodPut,
@@ -39,9 +38,9 @@ func (checkList *checkLists) refreshAccessToken(env *c.Env, refreshToken,
 	if err != nil {
 		return accessToken, refreshToken, tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#Xhca9hTB" // No the ContentType header
-	tests++
 	_, _, _, err = test.refreshAccessToken(env,
 		"",
 		http.MethodPut,
@@ -53,9 +52,9 @@ func (checkList *checkLists) refreshAccessToken(env *c.Env, refreshToken,
 	if err != nil {
 		return accessToken, refreshToken, tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#cdWR7DgQ" // No the RequestID Header
-	tests++
 	_, _, _, err = test.refreshAccessToken(env,
 		"",
 		http.MethodPut,
@@ -67,9 +66,9 @@ func (checkList *checkLists) refreshAccessToken(env *c.Env, refreshToken,
 	if err != nil {
 		return accessToken, refreshToken, tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#EDOv5oJ6" // Invalid the GET method
-	tests++
 	_, _, _, err = test.refreshAccessToken(env,
 		"",
 		http.MethodGet,
@@ -81,9 +80,9 @@ func (checkList *checkLists) refreshAccessToken(env *c.Env, refreshToken,
 	if err != nil {
 		return accessToken, refreshToken, tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#Wm1PBdVN" // Invalid the DELETE method
-	tests++
 	_, _, _, err = test.refreshAccessToken(env,
 		"",
 		http.MethodDelete,
@@ -95,9 +94,9 @@ func (checkList *checkLists) refreshAccessToken(env *c.Env, refreshToken,
 	if err != nil {
 		return accessToken, refreshToken, tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#9CGhxsWz" // OK
-	tests++
 	_, accessToken, refreshToken, err = test.refreshAccessToken(env,
 		refreshToken,
 		http.MethodPut,
@@ -109,12 +108,13 @@ func (checkList *checkLists) refreshAccessToken(env *c.Env, refreshToken,
 	if err != nil {
 		return accessToken, refreshToken, tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#n4XHQkCf"
-	tests++
 	if err = getListActiveSessions_200(env, accessToken, publicSessionID); err != nil {
 		return accessToken, refreshToken, tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
 
@@ -122,7 +122,7 @@ func (checkList *checkLists) refreshAccessToken(env *c.Env, refreshToken,
 }
 
 func (test *tests) refreshAccessToken(env *c.Env, refreshToken, method, endpoint,
-	headerContentType, headerRequestID string, statusCodeExpected int, checkLengthOfResponseValues bool) (string, string, string, error) {
+	headerContentType, headerRequestID string, statusCodeExpected int, checkResponseValues bool) (string, string, string, error) {
 
 	var (
 		err     error
@@ -159,7 +159,7 @@ func (test *tests) refreshAccessToken(env *c.Env, refreshToken, method, endpoint
 				strconv.Itoa(statusCode), strconv.Itoa(statusCodeExpected)))
 	}
 
-	if checkLengthOfResponseValues {
+	if checkResponseValues {
 
 		if len(response.PublicSessionID) == 0 || len(response.AccessToken) == 0 || len(response.RefreshToken) == 0 {
 			responseJson, err = json.Marshal(response)

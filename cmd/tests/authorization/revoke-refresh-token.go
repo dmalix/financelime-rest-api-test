@@ -23,7 +23,6 @@ func (checkList *checkLists) revokeRefreshToken(env *c.Env, accessToken, refresh
 	fmt.Print(checkListName, indentBeforeStatus)
 
 	testID = "#M678F5tr" // No the RequestID header
-	tests++
 	err = test.revokeRefreshToken(env,
 		accessToken,
 		publicSessionID,
@@ -35,9 +34,9 @@ func (checkList *checkLists) revokeRefreshToken(env *c.Env, accessToken, refresh
 	if err != nil {
 		return tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#2NKyviy2" // No the ContentType header
-	tests++
 	err = test.revokeRefreshToken(env,
 		accessToken,
 		publicSessionID,
@@ -49,9 +48,9 @@ func (checkList *checkLists) revokeRefreshToken(env *c.Env, accessToken, refresh
 	if err != nil {
 		return tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#iy2NKyv2" // Invalid Access Token
-	tests++
 	err = test.revokeRefreshToken(env,
 		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW5hbmNlbGltZS5jb20iLCJzdWIiOiJBdXRob3JpemF0aW9uIiwicHVycG9zZSI6ImFjY2VzcyIsImlkIjoiMTZkN2RiNTM3MjQ3ZWFmMTEzZjRjOGFkNTllOWEyYTU4OWNlN2NhZjYxMzViY2Q3YmZlYzBiNTI1YWY0OGEyYSIsImlhdCI6MTU5NjgzNTM5OX0.d68bea3232f10c60483f838fff8d8c66661cb497b141213c9a006be2e7c9d723",
 		publicSessionID,
@@ -63,9 +62,9 @@ func (checkList *checkLists) revokeRefreshToken(env *c.Env, accessToken, refresh
 	if err != nil {
 		return tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#Wp4oRz1n" // Invalid the PUT method
-	tests++
 	err = test.revokeRefreshToken(env,
 		accessToken,
 		publicSessionID,
@@ -77,9 +76,9 @@ func (checkList *checkLists) revokeRefreshToken(env *c.Env, accessToken, refresh
 	if err != nil {
 		return tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#wz0FKQHO" // Invalid the POST method
-	tests++
 	err = test.revokeRefreshToken(env,
 		accessToken,
 		publicSessionID,
@@ -91,9 +90,9 @@ func (checkList *checkLists) revokeRefreshToken(env *c.Env, accessToken, refresh
 	if err != nil {
 		return tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#Gq7dHBlM" // OK
-	tests++
 	err = test.revokeRefreshToken(env,
 		accessToken,
 		publicSessionID,
@@ -105,9 +104,9 @@ func (checkList *checkLists) revokeRefreshToken(env *c.Env, accessToken, refresh
 	if err != nil {
 		return tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	testID = "#7JGP0R3o" // Invalid the Refresh Token because it was canceled in the #Gq7dHBlM test
-	tests++
 	_, _, _, err = test.refreshAccessToken(env,
 		refreshToken,
 		http.MethodPut,
@@ -119,6 +118,7 @@ func (checkList *checkLists) revokeRefreshToken(env *c.Env, accessToken, refresh
 	if err != nil {
 		return tests, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
+	tests++
 
 	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
 

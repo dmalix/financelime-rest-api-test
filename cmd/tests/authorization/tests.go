@@ -215,51 +215,12 @@ func RunTests(env *c.Env) (int, error) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Get a list of active sessions"
-	indentBeforeStatus = "\t\t\t\t\t\t"
-	tests = 0
-
-	fmt.Print(g.ItemII)
-	fmt.Print(testName, indentBeforeStatus)
-
-	testID = "#MOi0O3GS"
-	tests++
-	if err = getListActiveSessions_401_NoHeaderAuthorization(env); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
+	tests, err = checklist.getListOfActiveSession(env, accessToken, publicSessionID)
+	if err != nil {
+		return totalTests, err
 	}
 
-	testID = "#jg7U4TDR"
-	tests++
-	if err = getListActiveSessions_401_InvalidAccessToken(env, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW5hbmNlbGltZS5jb20iLCJzdWIiOiJBdXRob3JpemF0aW9uIiwicHVycG9zZSI6ImFjY2VzcyIsImlkIjoiMTZkN2RiNTM3MjQ3ZWFmMTEzZjRjOGFkNTllOWEyYTU4OWNlN2NhZjYxMzViY2Q3YmZlYzBiNTI1YWY0OGEyYSIsImlhdCI6MTU5NjgzNTM5OX0.d68bea3232f10c60483f838fff8d8c66661cb497b141213c9a006be2e7c9d723"); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#C9a10Hr1"
-	tests++
-	if err = getListActiveSessions_401_NoBearerValueIntoHeaderAuthorization(env, accessToken); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#VaK6YsxC"
-	tests++
-	if err = getListActiveSessions_400_NoHeaderRequestID(env, accessToken); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#6R5YXIzJ"
-	tests++
-	if err = getListActiveSessions_405_InvalidMethodPost(env, accessToken); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#KnGUxH36"
-	tests++
-	if err = getListActiveSessions_200(env, accessToken, publicSessionID); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
-	totalTests = totalTests + tests
+	totalTests += tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -268,7 +229,7 @@ func RunTests(env *c.Env) (int, error) {
 		return totalTests, err
 	}
 
-	totalTests = totalTests + tests
+	totalTests += tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -277,7 +238,7 @@ func RunTests(env *c.Env) (int, error) {
 		return totalTests, err
 	}
 
-	totalTests = totalTests + tests
+	totalTests += tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
