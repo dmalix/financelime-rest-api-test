@@ -6,12 +6,12 @@ import (
 	c "github.com/dmalix/financelime-functional-tests/cmd/config"
 	g "github.com/dmalix/financelime-functional-tests/cmd/pgraphics"
 	u "github.com/dmalix/financelime-functional-tests/cmd/utils"
-	"net/http"
 	"strconv"
 )
 
 type checkLists int
 type tests int
+
 var checklist checkLists
 var test tests
 
@@ -263,104 +263,11 @@ func RunTests(env *c.Env) (int, error) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Refresh Access Token"
-	indentBeforeStatus = "\t\t\t\t\t\t\t"
-	tests = 0
-
-	fmt.Print(g.ItemII)
-	fmt.Print(testName, indentBeforeStatus)
-
-	testID = "#pWs8HJ4F" // Invalid Refresh Token
-	tests++
-	_, _, _, err = refreshAccessToken(env,
-		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW5hbmNlbGltZS5jb20iLCJzdWIiOiJBdXRob3JpemF0aW9uIiwicHVycG9zZSI6InJlZnJlc2giLCJpZCI6IjE2ZDdkYjUzNzI0N2VhZjExM2Y0YzhhZDU5ZTlhMmE1ODljZTdjYWY2MTM1YmNkN2JmZWMwYjUyNWFmNDhhMmEiLCJpYXQiOjE1OTY4MzUzOTl9.b88345d361482865f1a7af533d41d66e922dcca4c76c2d4b1fcfa65616679471",
-		http.MethodPut,
-		"/v1/oauth/token",
-		"application/json;charset=utf-8",
-		"K7800-H7625-Z5852-N1693-K1972",
-		404,
-		false)
+	accessToken, refreshToken, tests, err = checklist.refreshAccessToken(env, refreshToken, publicSessionID)
 	if err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
+		return totalTests, err
 	}
 
-	testID = "#Xhca9hTB" // No the ContentType header
-	tests++
-	_, _, _, err = refreshAccessToken(env,
-		"",
-		http.MethodPut,
-		"/v1/oauth/token",
-		"",
-		"K7800-H7625-Z5852-N1693-K1972",
-		400,
-		false)
-	if err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#cdWR7DgQ" // No the RequestID Header
-	tests++
-	_, _, _, err = refreshAccessToken(env,
-		"",
-		http.MethodPut,
-		"/v1/oauth/token",
-		"application/json;charset=utf-8",
-		"",
-		400,
-		false)
-	if err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#EDOv5oJ6" // Invalid the GET method
-	tests++
-	_, _, _, err = refreshAccessToken(env,
-		"",
-		http.MethodGet,
-		"/v1/oauth/token",
-		"application/json;charset=utf-8",
-		"K7800-H7625-Z5852-N1693-K1972",
-		405,
-		false)
-	if err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#Wm1PBdVN" // Invalid the DELETE method
-	tests++
-	_, _, _, err = refreshAccessToken(env,
-		"",
-		http.MethodDelete,
-		"/v1/oauth/token",
-		"application/json;charset=utf-8",
-		"K7800-H7625-Z5852-N1693-K1972",
-		405,
-		false)
-	if err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#9CGhxsWz" // OK
-	tests++
-	_, accessToken, refreshToken, err = refreshAccessToken(env,
-		refreshToken,
-		http.MethodPut,
-		"/v1/oauth/token",
-		"application/json;charset=utf-8",
-		"K7800-H7625-Z5852-N1693-K1972",
-		200,
-		true)
-	if err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#n4XHQkCf"
-	tests++
-	if err = getListActiveSessions_200(env, accessToken, publicSessionID); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
 	totalTests = totalTests + tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -429,5 +336,3 @@ func RunTests(env *c.Env) (int, error) {
 
 	return totalTests, nil
 }
-
-

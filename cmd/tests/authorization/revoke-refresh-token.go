@@ -108,7 +108,7 @@ func (checkList *checkLists) revokeRefreshToken(env *c.Env, accessToken, refresh
 
 	testID = "#7JGP0R3o" // Invalid the Refresh Token because it was canceled in the #Gq7dHBlM test
 	tests++
-	_, _, _, err = refreshAccessToken(env,
+	_, _, _, err = test.refreshAccessToken(env,
 		refreshToken,
 		http.MethodPut,
 		"/v1/oauth/token",
@@ -162,4 +162,3 @@ func (test *tests) revokeRefreshToken(env *c.Env, accessToken, publicSessionID, 
 
 	return nil
 }
-

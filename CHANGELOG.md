@@ -1,6 +1,7 @@
 ## v1.0.1
 Changes:
-- [x] Small changes in tests. 
+- [x] Small changes in tests.
+- [x] Change the structure of tests. 
 
 ## v1.0.0
 - [x] Small improvements in tests
