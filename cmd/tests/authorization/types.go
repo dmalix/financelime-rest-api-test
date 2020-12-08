@@ -12,7 +12,7 @@ type resetPassword struct {
 	Email string `json:"email"`
 }
 
-type getAccessToken struct {
+type requestAccessToken struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Device   device `json:"device"`
@@ -37,8 +37,4 @@ type session struct {
 	UserData  string    `json:"userData"`
 	UpdatedAt time.Time `json:"updatedAt"`
 	Platform  string    `json:"platform"`
-}
-
-type refreshToken struct {
-	RefreshToken string `json:"refreshToken"`
 }

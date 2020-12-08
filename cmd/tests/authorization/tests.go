@@ -181,21 +181,12 @@ func RunTests(env *c.Env) (int, error) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Request Access Token"
-	indentBeforeStatus = "\t\t\t\t\t\t\t"
-	tests = 0
-
-	fmt.Print(g.ItemII)
-	fmt.Print(testName, indentBeforeStatus)
-
-	testID = "#Kp0gJ1mm"
-	tests++
-	if publicSessionID, accessToken, refreshToken, err = requestAccessToken_200(env, newPassword); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
+	accessToken, refreshToken, publicSessionID, tests, err = checklist.requestAccessToken(env, accessToken, refreshToken, publicSessionID, newPassword)
+	if err != nil {
+		return totalTests, err
 	}
 
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
-	totalTests = totalTests + tests
+	totalTests += tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
