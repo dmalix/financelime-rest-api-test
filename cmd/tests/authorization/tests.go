@@ -199,19 +199,12 @@ func RunTests(env *c.Env) (int, error) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Get an email about a login action (+30 sec of waiting)"
-	indentBeforeStatus = "\t\t"
-	tests = 0
-
-	fmt.Print(g.ItemII)
-	fmt.Print(testName, indentBeforeStatus)
-
-	testID = "#piQaaBr0"
-	if err = getEmailAboutLoginAction(env); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
+	tests, err = checklist.getEmailAboutLoginAction(env)
+	if err != nil {
+		return totalTests, err
 	}
 
-	u.Colorize(u.ColorGreen, "Done", true)
+	totalTests += tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
