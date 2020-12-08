@@ -129,59 +129,16 @@ func RunTests(env *c.Env) (int, error) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Confirm user email (+30 sec of waiting)"
-	indentBeforeStatus = "\t\t\t\t"
-	tests = 0
-
-	fmt.Print(g.ItemII)
-	fmt.Print(testName, indentBeforeStatus)
-
-	testID = "#G7zv5jx4"
-	tests++
-	if err = confirmEmail_404_InvalidEndPoint123456789(env); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
+	tests, err = checklist.confirmUserEmail(env)
+	if err != nil {
+		return totalTests, err
 	}
 
-	testID = "#1iSKofF8"
-	tests++
-	if linkKey, err = confirmEmail_200(env); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#eJ7RFkI5"
-	tests++
-	if err = confirmEmail_404(env, linkKey); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#DwStF6M0"
-	tests++
-	if err = signUp_409_UserAlreadyExist2(env); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
 	totalTests = totalTests + tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Get a password from the email (+30 sec of waiting)"
-	indentBeforeStatus = "\t\t\t"
-	tests = 0
-
-	fmt.Print(g.ItemII)
-	fmt.Print(testName, indentBeforeStatus)
-
-	testID = "#F2ArtAXB"
-	if newPassword, err = getPasswordFromEmail(env); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	u.Colorize(u.ColorGreen, "Done", true)
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	accessToken, refreshToken, publicSessionID, tests, err = checklist.requestAccessToken(env, accessToken, refreshToken, publicSessionID, newPassword)
+	newPassword, tests, err = checklist.getPasswordFromEmailMessage(env)
 	if err != nil {
 		return totalTests, err
 	}
@@ -190,7 +147,17 @@ func RunTests(env *c.Env) (int, error) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	tests, err = checklist.getEmailAboutLoginAction(env)
+	accessToken, refreshToken, publicSessionID, tests, err = checklist.requestAccessToken(env, accessToken,
+		refreshToken, publicSessionID, newPassword)
+	if err != nil {
+		return totalTests, err
+	}
+
+	totalTests += tests
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	tests, err = checklist.getEmailMessageAboutLoginAction(env)
 	if err != nil {
 		return totalTests, err
 	}

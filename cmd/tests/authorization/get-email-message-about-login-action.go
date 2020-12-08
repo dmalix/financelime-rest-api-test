@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (checkList *checkLists) getEmailAboutLoginAction(env *c.Env) (int, error) {
+func (checkList *checkLists) getEmailMessageAboutLoginAction(env *c.Env) (int, error) {
 
 	const checkListName = "Get an email about a login action (+30 sec of waiting)"
 	const indentBeforeStatus = "\t\t"
@@ -23,7 +23,7 @@ func (checkList *checkLists) getEmailAboutLoginAction(env *c.Env) (int, error) {
 	fmt.Print(checkListName, indentBeforeStatus)
 
 	testID = "#piQaaBr0" // OK
-	if err = test.getEmailAboutLoginAction(env); err != nil {
+	if err = test.getEmailMessageAboutLoginAction(env); err != nil {
 		return 0, errors.New(fmt.Sprintf(errorMessage, checkListName, testID, err))
 	}
 
@@ -32,7 +32,7 @@ func (checkList *checkLists) getEmailAboutLoginAction(env *c.Env) (int, error) {
 	return tests, nil
 }
 
-func (test *tests) getEmailAboutLoginAction(env *c.Env) error {
+func (test *tests) getEmailMessageAboutLoginAction(env *c.Env) error {
 
 	var (
 		imap                    u.IMAP
