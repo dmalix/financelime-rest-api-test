@@ -113,33 +113,12 @@ func RunTests(env *c.Env) (int, error) {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	testName = "Create a password reset request"
-	indentBeforeStatus = "\t\t\t\t\t"
-	tests = 0
-
-	fmt.Print(g.ItemII)
-	fmt.Print(testName, indentBeforeStatus)
-
-	testID = "#fBmC8mR3"
-	tests++
-	if err = resetUserPassword_400_NoHeaderContentType(env); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
+	tests, err = checklist.requestUserPasswordReset(env)
+	if err != nil {
+		return totalTests, err
 	}
 
-	testID = "#GQ4XEhtu"
-	tests++
-	if err = resetUserPassword_400_NoHeaderRequestID(env); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	testID = "#M98D7nVP"
-	tests++
-	if err = resetUserPassword_202(env); err != nil {
-		return 0, errors.New(fmt.Sprintf(errorMessage, testID, err))
-	}
-
-	u.Colorize(u.ColorGreen, fmt.Sprintf("Pass(%s)", strconv.Itoa(tests)), true)
-	totalTests = totalTests + tests
+	totalTests += tests
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

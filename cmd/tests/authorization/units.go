@@ -574,7 +574,7 @@ func resetUserPassword_400_NoHeaderContentType(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/resetpassword"
+		endpoint           = "/v1/resetpassword"
 		statusCodeExpected = 400
 	)
 
@@ -606,7 +606,7 @@ func resetUserPassword_400_NoHeaderRequestID(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/resetpassword"
+		endpoint           = "/v1/resetpassword"
 		statusCodeExpected = 400
 	)
 
@@ -634,12 +634,12 @@ func resetUserPassword_400_NoHeaderRequestID(env *c.Env) error {
 	return nil
 }
 
-func resetUserPassword_202(env *c.Env) error {
+func resetUserPassword_204(env *c.Env) error {
 
 	const (
 		method             = http.MethodPost
-		endpoint           = "/account/resetpassword"
-		statusCodeExpected = 202
+		endpoint           = "/v1/resetpassword"
+		statusCodeExpected = 204
 	)
 
 	var (
